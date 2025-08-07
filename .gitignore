@@ -1,0 +1,52 @@
+# Dependencies and packages
+/vendor/
+/node_modules/
+
+# Environment files
+.env.local
+.env.production
+
+# Cache and temporary files
+/cache/
+/tmp/
+*.tmp
+*.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.backup
+*.bak
+*.sql.gz
+
+# Upload directories (if implemented)
+/uploads/
+/storage/files/
+
+# Session files (if using file-based sessions)
+/sessions/
+
+# Test files
+test_*.php
+phpunit.xml
+
+# Development tools
+/tools/
+/scripts/dev/
+
+# Documentation build files
+/docs/build/
