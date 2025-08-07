@@ -74,6 +74,9 @@ class AdminController extends BaseController {
     public function dashboard() {
         $this->requireAuth();
         
+        // Determine which dashboard to show based on role
+        $role = $_SESSION['admin_role'] ?? 'manicurist';
+        
         // Get dashboard statistics
         $todayStats = $this->appointmentModel->getRevenueStats('today');
         $weekStats = $this->appointmentModel->getRevenueStats('week');
@@ -85,13 +88,28 @@ class AdminController extends BaseController {
         // Get upcoming appointments
         $upcomingAppointments = $this->appointmentModel->getUpcomingAppointments(7);
         
-        $this->view('admin/dashboard', [
+        // For manicurists, filter to their own appointments
+        if ($role === 'manicurist' && isset($_SESSION['admin_manicurist_id'])) {
+            $todayAppointments = array_filter($todayAppointments, function($appointment) {
+                return $appointment['manicurist_id'] == $_SESSION['admin_manicurist_id'];
+            });
+            
+            $upcomingAppointments = array_filter($upcomingAppointments, function($appointment) {
+                return $appointment['manicurist_id'] == $_SESSION['admin_manicurist_id'];
+            });
+        }
+        
+        // Choose the appropriate dashboard view
+        $dashboardView = $role === 'superadmin' ? 'dashboards/admin' : 'dashboards/manicurist';
+        
+        $this->view($dashboardView, [
             'title' => 'Dashboard - Administración',
             'todayStats' => $todayStats,
             'weekStats' => $weekStats,
             'monthStats' => $monthStats,
             'todayAppointments' => $todayAppointments,
-            'upcomingAppointments' => $upcomingAppointments
+            'upcomingAppointments' => $upcomingAppointments,
+            'nextAppointment' => !empty($upcomingAppointments) ? $upcomingAppointments[0] : null
         ]);
     }
     

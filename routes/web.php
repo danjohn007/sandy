@@ -70,7 +70,7 @@ class Router {
     }
     
     private function callController($controllerName, $action, $uri) {
-        $controllerFile = __DIR__ . '/../app/controllers/' . $controllerName . '.php';
+        $controllerFile = __DIR__ . '/../controllers/' . $controllerName . '.php';
         
         if (!file_exists($controllerFile)) {
             $this->show404();
