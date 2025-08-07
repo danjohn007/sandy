@@ -69,7 +69,14 @@ abstract class BaseController {
     
     private function includeLayout($content, $data = []) {
         extract($data);
-        include __DIR__ . '/../views/layout/main.php';
+        
+        // Determine which layout to use
+        $uri = $_SERVER['REQUEST_URI'];
+        if (strpos($uri, '/admin') === 0 && strpos($uri, '/admin/login') === false && isset($_SESSION['admin_id'])) {
+            include __DIR__ . '/../views/layout/admin.php';
+        } else {
+            include __DIR__ . '/../views/layout/main.php';
+        }
     }
     
     protected function validateInput($rules, $data) {
