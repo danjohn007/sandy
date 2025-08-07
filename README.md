@@ -1,212 +1,171 @@
-# Sandy Beauty Nails - Sistema de Citas
+# Sandy Beauty Nails - Sistema de Gestión de Citas
 
-Sistema completo de reservas de citas para salón de belleza especializado en cuidado de uñas, desarrollado con PHP puro siguiendo arquitectura MVC.
+Este es un sistema completo de gestión de citas para salón de belleza especializado en cuidado de uñas desarrollado en PHP puro (sin framework) que sigue una arquitectura MVC organizada y accesible.
 
-## 🚀 Características
+## ✅ Características Implementadas
 
-### Funcionalidades Públicas
-- ✅ Formulario de reservación accesible de lunes a sábado (8:00 AM - 7:00 PM)
-- ✅ Validación automática de clientes existentes por teléfono
-- ✅ Selección de servicios (manicure, pedicure, uñas acrílicas)
-- ✅ Selección opcional de manicurista
-- ✅ Sistema de horarios disponibles con bloqueo automático
-- ✅ Validaciones en frontend (JavaScript) y backend (PHP)
-- ✅ Confirmación por pantalla
-- 🔄 Integración con Mercado Pago (pendiente)
+### 🔐 Sistema de Autenticación
+- Login seguro con hash de contraseñas
+- Gestión de sesiones segura
+- Protección contra ataques CSRF
+- Logout automático por inactividad
 
-### Dashboard Administrativo
-- ✅ Sistema de login para SuperAdmin y Manicuristas
-- ✅ Módulo de reservaciones con filtros avanzados
-- ✅ Gestión de clientes con historial
-- ✅ Módulo de finanzas (solo SuperAdmin)
-- ✅ Reportes y gráficas (solo SuperAdmin)
-- ✅ Cambio manual de estado de citas
+### 👥 Gestión de Usuarios (2 Roles)
+- **SuperAdmin**: Control total del sistema, reportes financieros
+- **Manicurista**: Gestión de sus propias citas y clientes
 
-### Tecnologías
-- **Backend:** PHP 8.x (MVC puro, sin framework)
-- **Base de Datos:** MySQL 5.7+
-- **Frontend:** Bootstrap 5.x + JavaScript Vanilla
-- **Pagos:** Mercado Pago (configuración pendiente)
+### 📊 Dashboards Diferenciados
+- **SuperAdmin Dashboard**: Métricas globales, gestión completa de citas, reportes financieros
+- **Manicurista Dashboard**: Citas asignadas, gestión de horarios personales
 
-## 📁 Estructura del Proyecto
+### 📝 Sistema de Reservaciones
+- Formulario público de reservación accesible
+- Validación automática de clientes existentes por teléfono
+- Selección de servicios (manicure, pedicure, uñas acrílicas)
+- Selección opcional de manicurista preferida
+- Sistema de horarios disponibles con bloqueo automático
+- Confirmación inmediata de reservas
+
+### 📅 Gestión de Citas
+- Estados configurables (Pendiente, Confirmada, Completada, Cancelada, No se presentó)
+- Filtros avanzados por fecha, estado, manicurista
+- Historial completo de citas por cliente
+- Cambio manual de estados
+
+### 👤 Gestión de Clientes
+- Registro automático en primera reserva
+- Historial completo de servicios
+- Información de contacto actualizable
+- Estadísticas por cliente
+
+### 💰 Módulo de Finanzas (Solo SuperAdmin)
+- Reportes de ingresos diarios, semanales, mensuales
+- Gráficas de rendimiento por servicio
+- Estadísticas de manicuristas
+- Métricas de ocupación
+
+### 🛡️ Seguridad Implementada
+- Validación y sanitización de datos
+- Hash seguro de contraseñas (password_hash)
+- Validación de permisos por roles
+- Logging de actividades del sistema
+- Headers de seguridad configurados
+
+## 🗂️ Estructura del Proyecto
 
 ```
-/sandy/
-├── /app/
-│   ├── /controllers/    # Controladores MVC
-│   ├── /models/         # Modelos y consultas DB
-│   └── /views/          # Vistas HTML + Bootstrap
-├── /config/
-│   └── database.php     # Configuración de BD
-├── /public/
-│   ├── /assets/         # CSS, JS, imágenes
-│   ├── .htaccess        # Configuración Apache
-│   └── index.php        # Punto de entrada
-├── /routes/
-│   └── web.php          # Rutas de la aplicación
-├── .env                 # Variables de entorno
-├── .htaccess            # Redirección a /public
-├── database_schema.sql  # Schema de la base de datos
-└── README.md           # Este archivo
+sandy/
+├── config/
+│   ├── app.php               # Configuración de aplicación
+│   └── database.php          # Configuración de base de datos
+├── controllers/
+│   ├── BaseController.php    # Controlador base
+│   ├── AdminController.php   # Lógica de autenticación admin
+│   ├── AppointmentController.php # Lógica de citas
+│   ├── BookingController.php # Lógica de reservaciones públicas
+│   ├── ClientController.php  # Lógica de clientes
+│   └── ReportController.php  # Lógica de reportes
+├── models/
+│   ├── BaseModel.php        # Modelo base
+│   ├── Appointment.php      # Modelo de citas
+│   ├── Client.php           # Modelo de clientes
+│   ├── Service.php          # Modelo de servicios
+│   └── Manicurist.php       # Modelo de manicuristas
+├── views/
+│   ├── dashboards/          # Vistas de dashboards por rol
+│   │   ├── admin.php        # Dashboard de SuperAdmin
+│   │   └── manicurist.php   # Dashboard de Manicurista
+│   ├── admin/               # Vistas administrativas
+│   ├── booking/             # Vistas de reservación pública
+│   └── layout/              # Plantillas base
+├── public/
+│   ├── index.php            # Punto de entrada principal
+│   ├── login.php            # Formulario de login
+│   ├── register.php         # Página de registro (no activa)
+│   └── assets/              # Recursos estáticos (CSS, JS, imágenes)
+├── includes/
+│   ├── auth.php             # Sistema de autenticación
+│   └── functions.php        # Funciones auxiliares
+├── routes/
+│   └── web.php              # Definición de rutas
+├── database.sql             # Schema de base de datos
+├── .htaccess               # Redirección a /public
+└── README.md               # Este archivo
 ```
 
-## 🔧 Instalación
+## 🚀 Instalación y Configuración
 
-### Prerrequisitos
-- Apache 2.4+ con mod_rewrite habilitado
-- PHP 8.0+ con extensiones: PDO, PDO_MySQL, mbstring
-- MySQL 5.7+ o MariaDB 10.2+
-- Acceso SSH o panel de control del hosting
+### 1. Requisitos del Sistema
+- PHP 8.0 o superior
+- MySQL 5.7 o 8.0
+- Servidor web (Apache/Nginx)
+- Extensiones PHP: PDO, PDO_MySQL, mbstring
 
-### Pasos de Instalación
+### 2. Configuración de Base de Datos
+1. Crear base de datos MySQL
+2. Ejecutar el script `database.sql`
+3. Configurar credenciales en `config/database.php`
 
-#### 1. Configurar Base de Datos
-```sql
--- Crear la base de datos
-CREATE DATABASE fix360_sandy CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+### 3. Configuración del Servidor
+- Configurar DocumentRoot hacia la carpeta `public/`
+- Habilitar mod_rewrite si usa Apache
+- Configurar permisos de escritura en `logs/` si es necesario
 
--- Crear usuario y otorgar permisos
-CREATE USER 'fix360_sandy'@'localhost' IDENTIFIED BY 'Danjohn07';
-GRANT ALL PRIVILEGES ON fix360_sandy.* TO 'fix360_sandy'@'localhost';
-FLUSH PRIVILEGES;
-```
+### 4. Usuarios por Defecto
+- **SuperAdmin**: `admin` / `admin123`
+- **Manicuristas**: 
+  - `sandy` / `admin123`
+  - `maria` / `admin123`
+  - `ana` / `admin123`
 
-#### 2. Ejecutar Schema de Base de Datos
-```bash
-# Importar el schema
-mysql -u fix360_sandy -p fix360_sandy < database_schema.sql
-```
+> ⚠️ **Importante**: Cambiar estas contraseñas en producción
 
-#### 3. Configurar Variables de Entorno
-Editar el archivo `.env` con tus credenciales:
+## 🎯 Funcionalidades por Rol
 
-```env
-# Configuración de Base de Datos
-DB_HOST=localhost
-DB_NAME=fix360_sandy
-DB_USER=fix360_sandy
-DB_PASS=Danjohn07
-DB_CHARSET=utf8mb4
+### SuperAdmin
+- ✅ Vista global de métricas del sistema
+- ✅ Gestión completa de todas las citas
+- ✅ Gestión de todos los clientes
+- ✅ Acceso a reportes financieros
+- ✅ Gráficas de rendimiento
+- ✅ Configuración del sistema
 
-# Configuración de Aplicación
-APP_URL=https://fix360.app/sandy/
-APP_ENV=production
-APP_DEBUG=false
+### Manicurista
+- ✅ Gestión de sus propias citas
+- ✅ Vista de agenda personal
+- ✅ Actualización de estados de cita
+- ✅ Información de clientes asignados
 
-# Mercado Pago (obtener en https://www.mercadopago.com/developers)
-MP_ACCESS_TOKEN=tu_access_token_aqui
-MP_PUBLIC_KEY=tu_public_key_aqui
+## 🔧 Tecnologías Utilizadas
 
-# Configuración de Email (opcional)
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME=tu_email@gmail.com
-MAIL_PASSWORD=tu_app_password
-MAIL_FROM_NAME=Sandy Beauty Nails
-```
+- **Backend**: PHP 8.x (puro, sin framework)
+- **Base de Datos**: MySQL con claves foráneas y relaciones optimizadas
+- **Frontend**: HTML5, CSS3, JavaScript Vanilla
+- **UI Framework**: Bootstrap 5
+- **Iconos**: Bootstrap Icons
+- **Seguridad**: password_hash(), sanitización de entrada, headers de seguridad
 
-#### 4. Configurar Apache Virtual Host
+## 📈 Características del Sistema
 
-**Opción A: Subdirectorio (Recomendado para hosting compartido)**
+### Sistema de Reservaciones Públicas
+- Formulario accesible en horario de negocio (Lunes-Sábado 8:00-19:00)
+- Detección automática de clientes existentes
+- Validación de disponibilidad en tiempo real
+- Confirmación inmediata
 
-Subir archivos al directorio `/public_html/sandy/` y la aplicación estará disponible en `https://tudominio.com/sandy/`
+### Gestión de Horarios
+- Configuración flexible de horarios de negocio
+- Bloqueo automático de slots ocupados
+- Duración personalizable por tipo de servicio
+- Validación de solapamientos
 
-**Opción B: Dominio/Subdomain completo**
+### Sistema de Reportes
+- Métricas de ingresos por período
+- Estadísticas de ocupación
+- Rendimiento por manicurista
+- Servicios más populares
 
-```apache
-<VirtualHost *:80>
-    ServerName sandy.tudominio.com
-    DocumentRoot /path/to/sandy/public
-    
-    <Directory /path/to/sandy/public>
-        AllowOverride All
-        Require all granted
-    </Directory>
-    
-    ErrorLog ${APACHE_LOG_DIR}/sandy_error.log
-    CustomLog ${APACHE_LOG_DIR}/sandy_access.log combined
-</VirtualHost>
-```
-
-#### 5. Configurar Permisos
-```bash
-# Dar permisos de escritura (si es necesario)
-chmod 755 /path/to/sandy/
-chmod 644 /path/to/sandy/.env
-```
-
-### 🔐 Credenciales por Defecto
-
-**SuperAdmin:**
-- Usuario: `admin`
-- Contraseña: `admin123`
-
-**Manicuristas:**
-- Usuario: `sandy` | Contraseña: `admin123`
-- Usuario: `maria` | Contraseña: `admin123`
-- Usuario: `ana` | Contraseña: `admin123`
-
-> ⚠️ **Importante:** Cambiar estas contraseñas en producción
-
-### 📧 Configuración de Email (Opcional)
-
-Para habilitar notificaciones por email:
-
-1. Configurar SMTP en `.env`
-2. Para Gmail, generar una App Password en la configuración de cuenta
-3. Actualizar las variables MAIL_* en `.env`
-
-### 💳 Configuración de Mercado Pago
-
-1. Crear cuenta en [Mercado Pago Developers](https://www.mercadopago.com/developers)
-2. Obtener credenciales de prueba/producción
-3. Actualizar `MP_ACCESS_TOKEN` y `MP_PUBLIC_KEY` en `.env`
-4. Implementar webhook para confirmación de pagos (pendiente)
-
-## 🎯 Uso del Sistema
-
-### Para Clientes
-1. Visitar `/book` o hacer clic en "Reservar Cita"
-2. Ingresar número de teléfono (detecta clientes existentes)
-3. Completar datos personales
-4. Seleccionar servicio y manicurista (opcional)
-5. Elegir fecha y hora disponible
-6. Confirmar reserva
-
-### Para Administradores
-1. Acceder a `/admin`
-2. Iniciar sesión con credenciales
-3. **Dashboard:** Ver resumen del día y estadísticas
-4. **Citas:** Gestionar reservas y cambiar estados
-5. **Clientes:** Ver historial y datos de clientes
-6. **Reportes:** (Solo SuperAdmin) Ver estadísticas financieras
-
-## 🔧 Solución de Problemas
-
-### Error 500 - Internal Server Error
-- Verificar que mod_rewrite esté habilitado
-- Revisar permisos de archivos y directorios
-- Comprobar configuración de base de datos en `.env`
-- Verificar logs de Apache: `/var/log/apache2/error.log`
-
-### Error de Conexión a Base de Datos
-- Verificar credenciales en `.env`
-- Comprobar que MySQL esté ejecutándose
-- Verificar que el usuario tenga permisos en la base de datos
-
-### Problemas con Rutas
-- Verificar que `.htaccess` esté en `/public/`
-- Comprobar que AllowOverride esté habilitado en Apache
-- Verificar configuración de DocumentRoot
-
-### Problemas de Permisos
-```bash
-# Corregir permisos básicos
-find /path/to/sandy -type f -exec chmod 644 {} \;
-find /path/to/sandy -type d -exec chmod 755 {} \;
-```
-
-## 🚀 Características Pendientes
+## 🛠️ Próximas Mejoras
 
 - [ ] Integración completa con Mercado Pago
 - [ ] Sistema de notificaciones por email/SMS
@@ -216,23 +175,24 @@ find /path/to/sandy -type d -exec chmod 755 {} \;
 - [ ] Sistema de reseñas y calificaciones
 - [ ] Aplicación móvil (PWA)
 - [ ] Integración con WhatsApp Business API
+- [ ] Calendario visual interactivo
+- [ ] Gestión de inventario de productos
 
-## 🤝 Contribución
+## 🔐 Notas de Seguridad
 
-Este proyecto fue desarrollado específicamente para Sandy Beauty Nails. Para modificaciones o mejoras:
-
-1. Realizar backup de la base de datos
-2. Probar cambios en ambiente de desarrollo
-3. Documentar nuevas funcionalidades
-4. Actualizar este README si es necesario
+El sistema implementa múltiples capas de seguridad:
+- Autenticación robusta con sesiones seguras
+- Validación exhaustiva de entrada de datos
+- Protección contra CSRF, XSS y SQL Injection
+- Permisos granulares por rol
+- Logging completo de actividades
+- Headers de seguridad HTTP
 
 ## 📞 Soporte
 
+Sistema desarrollado como solución completa para Sandy Beauty Nails. Incluye todas las funcionalidades necesarias para la gestión diaria de un salón de belleza especializado en cuidado de uñas.
+
 Para soporte técnico o consultas sobre el sistema:
-- Email: soporte@fix360.app
-- URL: https://fix360.app/sandy/
-
-## 📄 Licencia
-
-Sistema propietario desarrollado para Sandy Beauty Nails.
-Todos los derechos reservados © 2024.
+- Sistema listo para producción con las configuraciones adecuadas
+- Documentación completa incluida
+- Estructura escalable y mantenible

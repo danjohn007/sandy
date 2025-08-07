@@ -16,8 +16,8 @@ if (getenv('APP_ENV') !== 'production') {
 require_once __DIR__ . '/../config/database.php';
 
 // Load base controller and models
-require_once __DIR__ . '/../app/controllers/BaseController.php';
-require_once __DIR__ . '/../app/models/BaseModel.php';
+require_once __DIR__ . '/../controllers/BaseController.php';
+require_once __DIR__ . '/../models/BaseModel.php';
 
 // Load router
 $router = require_once __DIR__ . '/../routes/web.php';
