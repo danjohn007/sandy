@@ -40,12 +40,22 @@ class AppointmentController extends BaseController {
         $page = (int)($_GET['page'] ?? 1);
         $perPage = 20;
         
-        // Get appointments with pagination
+        // Get appointments with pagination and safe defaults
         $appointments = $this->appointmentModel->getAppointmentsWithDetails($filters, $page, $perPage);
+        if (!is_array($appointments)) {
+            $appointments = [];
+        }
         
-        // Get filter options
+        // Get filter options with safe defaults
         $services = $this->serviceModel->getActiveServices();
+        if (!is_array($services)) {
+            $services = [];
+        }
+        
         $manicurists = $this->manicuristModel->getActiveManicurists();
+        if (!is_array($manicurists)) {
+            $manicurists = [];
+        }
         
         $this->view('admin/appointments/index', [
             'title' => 'Citas - Administración',

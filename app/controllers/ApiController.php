@@ -25,11 +25,17 @@ class ApiController extends BaseController {
     
     public function getServices() {
         $services = $this->serviceModel->getActiveServices();
+        if (!is_array($services)) {
+            $services = [];
+        }
         $this->json(['success' => true, 'data' => $services]);
     }
     
     public function getManicurists() {
         $manicurists = $this->manicuristModel->getActiveManicurists();
+        if (!is_array($manicurists)) {
+            $manicurists = [];
+        }
         $this->json(['success' => true, 'data' => $manicurists]);
     }
     

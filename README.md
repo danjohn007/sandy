@@ -206,6 +206,21 @@ find /path/to/sandy -type f -exec chmod 644 {} \;
 find /path/to/sandy -type d -exec chmod 755 {} \;
 ```
 
+### Variables Indefinidas (Corregido)
+**Problema:** Warnings de PHP sobre variables no definidas en dashboard y formularios.
+
+**Solución implementada:**
+- **AdminController:** Agregado método `initializeStats()` para validar estadísticas con valores predeterminados seguros
+- **Dashboard:** Validaciones `isset()` antes de acceder a índices de arrays
+- **BookingController:** Validación de arrays `$services` y `$manicurists` con valores predeterminados vacíos
+- **Formulario de reservas:** Validación `is_array()` antes de usar `foreach` en servicios y manicuristas
+
+**Archivos modificados:**
+- `app/controllers/AdminController.php` - Método `initializeStats()` agregado
+- `app/views/admin/dashboard.php` - Validaciones de acceso a arrays
+- `app/controllers/BookingController.php` - Inicialización segura de arrays  
+- `app/views/booking/form.php` - Validación de arrays antes de iteración
+
 ## 🚀 Características Pendientes
 
 - [ ] Integración completa con Mercado Pago
@@ -216,6 +231,16 @@ find /path/to/sandy -type d -exec chmod 755 {} \;
 - [ ] Sistema de reseñas y calificaciones
 - [ ] Aplicación móvil (PWA)
 - [ ] Integración con WhatsApp Business API
+
+## 🔒 Mejoras de Seguridad y Estabilidad
+
+### Validaciones Implementadas (v1.1)
+- ✅ **Prevención de variables indefinidas:** Todos los controladores y vistas ahora validan la existencia de variables antes de usarlas
+- ✅ **Inicialización segura de arrays:** Los arrays de servicios y manicuristas se inicializan como arrays vacíos si no hay datos
+- ✅ **Validación de índices de array:** Las vistas verifican que los índices existan antes de accederlos
+- ✅ **Manejo robusto de estadísticas:** El dashboard inicializa estadísticas con valores por defecto (0) si no hay datos
+- ✅ **Protección contra foreach en null:** Validación `is_array()` antes de iterar sobre datos
+- ✅ **Código defensivo:** Todas las operaciones críticas incluyen validaciones de tipo y existencia
 
 ## 🤝 Contribución
 
