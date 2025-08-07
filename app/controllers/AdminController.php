@@ -74,16 +74,27 @@ class AdminController extends BaseController {
     public function dashboard() {
         $this->requireAuth();
         
-        // Get dashboard statistics
+        // Get dashboard statistics with safe defaults
         $todayStats = $this->appointmentModel->getRevenueStats('today');
         $weekStats = $this->appointmentModel->getRevenueStats('week');
         $monthStats = $this->appointmentModel->getRevenueStats('month');
         
-        // Get today's appointments
-        $todayAppointments = $this->appointmentModel->getTodaysAppointments();
+        // Initialize with safe defaults if null or missing keys
+        $todayStats = $this->initializeStats($todayStats);
+        $weekStats = $this->initializeStats($weekStats);
+        $monthStats = $this->initializeStats($monthStats);
         
-        // Get upcoming appointments
+        // Get today's appointments with safe default
+        $todayAppointments = $this->appointmentModel->getTodaysAppointments();
+        if (!is_array($todayAppointments)) {
+            $todayAppointments = [];
+        }
+        
+        // Get upcoming appointments with safe default
         $upcomingAppointments = $this->appointmentModel->getUpcomingAppointments(7);
+        if (!is_array($upcomingAppointments)) {
+            $upcomingAppointments = [];
+        }
         
         $this->view('admin/dashboard', [
             'title' => 'Dashboard - Administración',
@@ -93,6 +104,21 @@ class AdminController extends BaseController {
             'todayAppointments' => $todayAppointments,
             'upcomingAppointments' => $upcomingAppointments
         ]);
+    }
+    
+    /**
+     * Initialize statistics array with safe defaults
+     */
+    private function initializeStats($stats) {
+        if (!is_array($stats)) {
+            $stats = [];
+        }
+        
+        return [
+            'total_appointments' => $stats['total_appointments'] ?? 0,
+            'total_revenue' => $stats['total_revenue'] ?? 0.00,
+            'avg_revenue' => $stats['avg_revenue'] ?? 0.00
+        ];
     }
     
     public function logout() {
