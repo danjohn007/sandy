@@ -3,6 +3,8 @@
  * Base Controller class for Sandy Beauty Nails
  */
 
+require_once __DIR__ . '/../../config/database.php';
+
 abstract class BaseController {
     protected $db;
     

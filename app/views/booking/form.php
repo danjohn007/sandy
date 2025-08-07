@@ -74,14 +74,18 @@
                             </label>
                             <select class="form-select" id="service_id" name="service_id" required>
                                 <option value="">Selecciona un servicio</option>
-                                <?php foreach ($services as $service): ?>
-                                    <option value="<?= $service['id'] ?>" 
-                                            data-price="<?= $service['price'] ?>"
-                                            data-duration="<?= $service['duration_minutes'] ?>"
-                                            <?= (($_SESSION['booking_data']['service_id'] ?? '') == $service['id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($service['name']) ?> - $<?= number_format($service['price'], 2) ?>
-                                    </option>
-                                <?php endforeach; ?>
+                                <?php if (is_array($services) && !empty($services)): ?>
+                                    <?php foreach ($services as $service): ?>
+                                        <option value="<?= $service['id'] ?>" 
+                                                data-price="<?= $service['price'] ?>"
+                                                data-duration="<?= $service['duration_minutes'] ?>"
+                                                <?= (($_SESSION['booking_data']['service_id'] ?? '') == $service['id']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($service['name']) ?> - $<?= number_format($service['price'], 2) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <option value="">No hay servicios disponibles</option>
+                                <?php endif; ?>
                             </select>
                         </div>
                         
@@ -92,12 +96,16 @@
                             </label>
                             <select class="form-select" id="manicurist_id" name="manicurist_id">
                                 <option value="">Sin preferencia</option>
-                                <?php foreach ($manicurists as $manicurist): ?>
-                                    <option value="<?= $manicurist['id'] ?>"
-                                            <?= (($_SESSION['booking_data']['manicurist_id'] ?? '') == $manicurist['id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($manicurist['name']) ?>
-                                    </option>
-                                <?php endforeach; ?>
+                                <?php if (is_array($manicurists) && !empty($manicurists)): ?>
+                                    <?php foreach ($manicurists as $manicurist): ?>
+                                        <option value="<?= $manicurist['id'] ?>"
+                                                <?= (($_SESSION['booking_data']['manicurist_id'] ?? '') == $manicurist['id']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($manicurist['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <option value="">No hay manicuristas disponibles</option>
+                                <?php endif; ?>
                             </select>
                         </div>
                         

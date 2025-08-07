@@ -36,8 +36,18 @@ class BookingController extends BaseController {
             return;
         }
         
+        // Get services and manicurists with safe defaults
         $services = $this->serviceModel->getActiveServices();
         $manicurists = $this->manicuristModel->getActiveManicurists();
+        
+        // Ensure arrays are properly initialized
+        if (!is_array($services)) {
+            $services = [];
+        }
+        
+        if (!is_array($manicurists)) {
+            $manicurists = [];
+        }
         
         $this->view('booking/form', [
             'title' => 'Reservar Cita',

@@ -23,6 +23,9 @@ class ClientController extends BaseController {
         
         if (!empty($search)) {
             $clients = $this->clientModel->searchClients($search);
+            if (!is_array($clients)) {
+                $clients = [];
+            }
             $pagination = [
                 'data' => $clients,
                 'total' => count($clients),
@@ -32,10 +35,22 @@ class ClientController extends BaseController {
             ];
         } else {
             $pagination = $this->clientModel->paginate($page, $perPage, [], 'name ASC');
+            if (!is_array($pagination)) {
+                $pagination = [
+                    'data' => [],
+                    'total' => 0,
+                    'page' => 1,
+                    'perPage' => $perPage,
+                    'totalPages' => 1
+                ];
+            }
         }
         
-        // Get frequent clients
+        // Get frequent clients with safe default
         $frequentClients = $this->clientModel->getFrequentClients(10);
+        if (!is_array($frequentClients)) {
+            $frequentClients = [];
+        }
         
         $this->view('admin/clients/index', [
             'title' => 'Clientes - Administración',

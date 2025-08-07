@@ -14,7 +14,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Hoy</h5>
-                        <h3 class="mb-0"><?= $todayStats['total_appointments'] ?></h3>
+                        <h3 class="mb-0"><?= isset($todayStats['total_appointments']) ? (int)$todayStats['total_appointments'] : 0 ?></h3>
                         <small>Citas</small>
                     </div>
                     <div class="align-self-center">
@@ -31,7 +31,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Esta Semana</h5>
-                        <h3 class="mb-0"><?= $weekStats['total_appointments'] ?></h3>
+                        <h3 class="mb-0"><?= isset($weekStats['total_appointments']) ? (int)$weekStats['total_appointments'] : 0 ?></h3>
                         <small>Citas</small>
                     </div>
                     <div class="align-self-center">
@@ -48,7 +48,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Este Mes</h5>
-                        <h3 class="mb-0"><?= $monthStats['total_appointments'] ?></h3>
+                        <h3 class="mb-0"><?= isset($monthStats['total_appointments']) ? (int)$monthStats['total_appointments'] : 0 ?></h3>
                         <small>Citas</small>
                     </div>
                     <div class="align-self-center">
@@ -65,7 +65,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <h5 class="card-title">Ingresos Hoy</h5>
-                        <h3 class="mb-0">$<?= number_format($todayStats['total_revenue'] ?? 0, 2) ?></h3>
+                        <h3 class="mb-0">$<?= number_format(isset($todayStats['total_revenue']) ? (float)$todayStats['total_revenue'] : 0, 2) ?></h3>
                         <small>Total</small>
                     </div>
                     <div class="align-self-center">
@@ -86,7 +86,7 @@
                 <a href="/admin/appointments" class="btn btn-sm btn-outline-primary">Ver Todas</a>
             </div>
             <div class="card-body">
-                <?php if (empty($todayAppointments)): ?>
+                <?php if (!is_array($todayAppointments) || empty($todayAppointments)): ?>
                     <div class="text-center py-4 text-muted">
                         <i class="bi bi-calendar-x" style="font-size: 3rem;"></i>
                         <p class="mt-2">No hay citas programadas para hoy</p>
@@ -156,19 +156,19 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span>Ingresos Semana:</span>
-                        <strong class="text-success">$<?= number_format($weekStats['total_revenue'] ?? 0, 2) ?></strong>
+                        <strong class="text-success">$<?= number_format(isset($weekStats['total_revenue']) ? (float)$weekStats['total_revenue'] : 0, 2) ?></strong>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span>Ingresos Mes:</span>
-                        <strong class="text-success">$<?= number_format($monthStats['total_revenue'] ?? 0, 2) ?></strong>
+                        <strong class="text-success">$<?= number_format(isset($monthStats['total_revenue']) ? (float)$monthStats['total_revenue'] : 0, 2) ?></strong>
                     </div>
                 </div>
                 <div class="mb-3">
                     <div class="d-flex justify-content-between">
                         <span>Promedio por Cita:</span>
-                        <strong>$<?= number_format($monthStats['avg_revenue'] ?? 0, 2) ?></strong>
+                        <strong>$<?= number_format(isset($monthStats['avg_revenue']) ? (float)$monthStats['avg_revenue'] : 0, 2) ?></strong>
                     </div>
                 </div>
                 
@@ -176,7 +176,7 @@
                 
                 <h6 class="text-muted mb-3">Próximas Citas (7 días)</h6>
                 
-                <?php if (empty($upcomingAppointments)): ?>
+                <?php if (!is_array($upcomingAppointments) || empty($upcomingAppointments)): ?>
                     <p class="text-muted">No hay citas próximas</p>
                 <?php else: ?>
                     <?php foreach (array_slice($upcomingAppointments, 0, 5) as $appointment): ?>
